@@ -22,6 +22,8 @@ type CustomInputType = {
   error?: boolean;
   success?: boolean;
   white?: boolean;
+  value?: any;
+  onKeyDown?: (event: any) => void;
 };
 
 export default function CustomInput(props: CustomInputType) {
@@ -57,7 +59,7 @@ export default function CustomInput(props: CustomInputType) {
     [classes.input]: true,
     [classes.whiteInput]: white,
   });
-  var formControlClasses;
+  let formControlClasses;
   if (formControlProps !== undefined) {
     formControlClasses = clsx(formControlProps.className, classes.formControl);
   } else {

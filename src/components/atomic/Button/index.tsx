@@ -30,6 +30,7 @@ type RegularButtonType = {
   type?: "button" | "reset" | "submit" | undefined;
   className?: string;
   rest?: Record<string, any>;
+  onClick?: (event: any) => void;
 };
 
 const makeComponentStyles = makeStyles(() => ({
