@@ -10,21 +10,24 @@ import {
   authenticationFailed,
   authenticationSuccess,
   initiateAuthentication,
-  resetAuthenticationStatus,
 } from "../../actions/userDataActions";
 
 const useHomeStyles = makeStyles(homeStyles);
 
-const Login = () => {
+type Login = {
+  history: any;
+};
+
+const Login = ({ history }: Login) => {
   const classes = useHomeStyles();
   const dispatch = useDispatch();
   const [userName, setUserName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const isAuthenticating = useSelector(
-    (state) => state.userData.isAuthenticating
+    (state: any) => state.userData.isAuthenticating
   );
   const authenticationStatus = useSelector(
-    (state) => state.userData.authenticationStatus
+    (state: any) => state.userData.authenticationStatus
   );
 
   const authenticateUser = async () => {
@@ -35,7 +38,9 @@ const Login = () => {
     );
 
     if (response.data?.success === true) {
-      dispatch(authenticationSuccess(response.data));
+      dispatch(authenticationSuccess(response.data.data));
+      // setTimeout(() => history.push("/login-Success"), 1000);
+      history.push("/login-Success");
     } else {
       dispatch(authenticationFailed());
     }
@@ -50,7 +55,6 @@ const Login = () => {
   };
 
   const getInformationMessage = () => {
-    console.log("DATA:::", authenticationStatus, isAuthenticating);
     if (isAuthenticating) return "";
     else if (authenticationStatus == "failed") return "Authetication Failed";
     else if (authenticationStatus == "success")

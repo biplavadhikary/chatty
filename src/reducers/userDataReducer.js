@@ -21,7 +21,7 @@ export default createReducer(initialState, {
     isLoggedIn: true,
     authenticationStatus: "success",
     loggedInTime: new Date(),
-    ...payload,
+    authenticationResponse: payload,
   }),
   [userDataActions.AUTHENTICATION_FAILED]: (state) => ({
     ...state,

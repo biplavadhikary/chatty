@@ -1,5 +1,7 @@
+import ConversationsDashboard from "../views/ConversationsDashboard";
 import Home from "../views/Home";
 import Login from "../views/Login";
+import PostLogin from "../views/PostLogin";
 
 type RouteConfig = {
   path: string;
@@ -20,6 +22,18 @@ const routes: RouteConfig[] = [
     path: "/login",
     exact: true,
     component: Login,
+  },
+  {
+    id: "LoginSuccessLoader",
+    path: "/login-Success",
+    exact: true,
+    component: PostLogin,
+  },
+  {
+    id: "ConversationsDashboard",
+    path: "/conversations-dashboard",
+    exact: true,
+    component: ConversationsDashboard,
   },
 ];
 
