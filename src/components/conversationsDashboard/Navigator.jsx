@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Navigator({ handleSignOut, classes }) {
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" color="primary" className={classes.appBar}>
       <Toolbar>
         <Typography variant="h6" color="textPrimary" className={classes.title}>
           Conversation Dashboard

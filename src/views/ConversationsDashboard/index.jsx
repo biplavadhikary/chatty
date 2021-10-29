@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     color: "black",
   },
+  appBar: {
+    background: "#3981a4",
+  },
 }));
 
 export default function ConversationsDashboard({ history }) {
