@@ -13,6 +13,10 @@
 - Do _npm run build_ to build the bundle
 - Run _npm run serve_ to launch the optimized UI bundle in dev server. You can also use the build files with your own application server
 
+### Test Creds.
+- alex.bokeh   -   12345
+- adhikary.man -   12345
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
