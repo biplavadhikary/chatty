@@ -1,4 +1,10 @@
-import { makeStyles } from "@material-ui/core";
+import {
+  Button,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
 
@@ -20,6 +26,7 @@ const useStyles = makeStyles(() => ({
   },
   more: {
     fontWeight: "bold",
+    color: "black",
   },
   title: {},
   back: {
@@ -36,21 +43,55 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  moreMenuText: {
+    color: "black",
+  },
 }));
 
-function Header({ name, onShuffle }) {
+function Header({ name, onProfileClick }) {
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleMoreMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMoreMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className={classes.header}>
       <button
         className={clsx(classes.back, classes.button)}
-        onClick={onShuffle}
+        onClick={onProfileClick}
       >
-        Shuffle
+        Profile
       </button>
-      <h1 className={classes.name}>{name}</h1>
-      <button className={clsx(classes.more, classes.button)}>...</button>
+      <h1 className={classes.name}>{name || "Unknown"}</h1>
+      <Button
+        className={clsx(classes.more, classes.button)}
+        onClick={handleMoreMenuClick}
+      >
+        ...
+      </Button>
+      <Menu
+        id="more-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMoreMenuClose}
+      >
+        <MenuItem onClick={handleMoreMenuClose}>
+          <Typography className={classes.moreMenuText}>Clear Chat</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleMoreMenuClose}>
+          <Typography className={classes.moreMenuText}>View Details</Typography>
+        </MenuItem>
+        <MenuItem onClick={handleMoreMenuClose}>
+          <Typography className={classes.moreMenuText}>Block</Typography>
+        </MenuItem>
+      </Menu>
     </div>
   );
 }

@@ -31,7 +31,7 @@ const routes: RouteConfig[] = [
   },
   {
     id: "ConversationsDashboard",
-    path: "/conversations-dashboard",
+    path: "/conversations-dashboard/:userId",
     exact: true,
     component: ConversationsDashboard,
   },

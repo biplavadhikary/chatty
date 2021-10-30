@@ -1,9 +1,11 @@
 import { makeStyles, Typography } from "@material-ui/core";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addMessageToConversation } from "../../../actions/conversationActions";
+import { getDisplayName } from "../../../utils/dataUtils";
 import theme from "../../../utils/helper/themeUtils";
 import { createNewMessageItem } from "../../../utils/textUtils";
+import ChooseConversationArt from "../../svg/ChooseConversationArt";
 import Chat from "./Chat";
 import Composer from "./Composer";
 import Header from "./Header";
@@ -20,38 +22,61 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     overflow: "hidden",
   },
+  wrapperNoChatSelected: {
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
   pane: {
     boxSizing: "border-box",
     borderBottom: "1px solid #efefef",
     paddingBottom: "1rem",
     margin: "1px",
   },
+  noConversationsSelectedText: {
+    margin: theme.spacing(10, 5),
+  },
 }));
 
 export default function CoversationsWindow({ conversation }) {
   const classes = useStyles();
-  const [iteration, setInteration] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const socket = useSelector((state) => state.userData.socket);
+  const senderId = useSelector(
+    (state) => state.userData.authenticationResponse?.userId
+  );
   const dispatch = useDispatch();
 
   if (!conversation) {
     return (
-      <div className={classes.wrapper}>
-        <Typography>No Conversations Found</Typography>
+      <div className={classes.wrapperNoChatSelected}>
+        <ChooseConversationArt width="360" height="220" />
+        <Typography className={classes.noConversationsSelectedText}>
+          Select any Conversation
+        </Typography>
       </div>
     );
   }
 
   const { messageDataList, ...personInformation } = conversation;
-  // console.log("Person", personInformation);
+  console.log("Person", personInformation);
 
-  const addMessage = (e, val, clearDisplayFunc) => {
-    console.log("Message:::", val?.trim().length > 0);
+  const sendMessage = (recipients, messageItem) => {
+    if (socket) {
+      socket.emit("send-message", { recipients, messageItem });
+    }
+  };
+
+  const onSendAction = (e, val, clearDisplayFunc) => {
     if (val?.trim().length > 0) {
-      const item = createNewMessageItem(val, false);
-      console.log("Message2:::", item, personInformation.userId);
+      const messageItem = createNewMessageItem(val, senderId);
       clearDisplayFunc?.();
-      dispatch(addMessageToConversation(personInformation.userId, item));
+
+      const recipients = [personInformation.userId];
+      sendMessage(recipients, messageItem);
+      dispatch(addMessageToConversation(personInformation.userId, messageItem));
     }
   };
 
@@ -59,18 +84,18 @@ export default function CoversationsWindow({ conversation }) {
     <div className={classes.wrapper}>
       <div className={classes.pane}>
         <Header
-          name={`${conversation.firstName} ${conversation.lastName}`}
-          onShuffle={() => setInteration(1 + iteration)}
+          name={getDisplayName(conversation)}
+          onProfileClick={emptyFunction}
         />
       </div>
 
       <Chat
         messages={messageDataList}
         person={personInformation}
-        visible={visible}
+        visible
         onAnimComplete={emptyFunction}
       />
-      <Composer onClickEnter={addMessage} />
+      <Composer onClickEnter={onSendAction} />
     </div>
   );
 }

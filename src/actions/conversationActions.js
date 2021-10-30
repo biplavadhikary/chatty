@@ -14,6 +14,10 @@ export const deleteConversation = (id) => ({
   payload: { id },
 });
 
+export const clearAllConversations = () => ({
+  type: conversationActions.CLEAR_ALL_CONVERSATIONS,
+});
+
 export const conversationFetchFailed = () => ({
   type: conversationActions.FETCH_ALL_CONVERSATIONS_ERROR,
 });

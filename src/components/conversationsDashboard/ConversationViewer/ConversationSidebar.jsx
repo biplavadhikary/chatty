@@ -9,6 +9,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import { getDisplayName } from "../../../utils/dataUtils";
 
 function randomColor() {
   let hex = Math.floor(Math.random() * 0xffffff);
@@ -32,6 +33,8 @@ const useStyles = makeStyles(() => ({
     width: "36%",
     height: "100%",
     borderRight: "1px solid #d6d6d6",
+    overflowX: "hidden",
+    overflowY: "auto",
   },
   conversationsChatContainer: {
     width: "64%",
@@ -72,7 +75,7 @@ export default function ConversationSidebar({
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${conversationItem.firstName} ${conversationItem.lastName}`}
+                  primary={getDisplayName(conversationItem)}
                   secondary={
                     <Typography className={classes.peekMessageText}>
                       {conversationItem?.messageDataList?.[

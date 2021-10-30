@@ -16,3 +16,12 @@ export const authenticationFailed = () => ({
 export const resetAuthenticationStatus = () => ({
   type: userDataActions.RESET_STATUS,
 });
+
+export const createSocket = (socket) => ({
+  type: userDataActions.CREATE_SOCKET,
+  payload: socket,
+});
+
+export const resetSocketConnection = () => ({
+  type: userDataActions.RESET_SOCKET,
+});

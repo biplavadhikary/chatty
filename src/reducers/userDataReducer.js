@@ -8,6 +8,7 @@ const initialState = {
   loggedInTime: null,
   authenticationResponse: {},
   authenticationStatus: "",
+  socket: null,
 };
 
 export default createReducer(initialState, {
@@ -34,5 +35,14 @@ export default createReducer(initialState, {
     authenticationStatus: "",
     userId: null,
     isLoggedIn: false,
+    socket: null,
+  }),
+  [userDataActions.CREATE_SOCKET]: (state, { payload }) => ({
+    ...state,
+    socket: payload,
+  }),
+  [userDataActions.RESET_SOCKET]: (state) => ({
+    ...state,
+    socket: null,
   }),
 });

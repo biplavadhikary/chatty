@@ -1,10 +1,17 @@
 import React from "react";
 import { makeStyles, Paper, Tab, Tabs } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { resetAuthenticationStatus } from "../../actions/userDataActions";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetAuthenticationStatus,
+  resetSocketConnection,
+} from "../../actions/userDataActions";
 import { resetContacts } from "../../actions/contactActions";
 import Navigator from "../../components/conversationsDashboard/Navigator";
 import ConversationsViewer from "../../components/conversationsDashboard/ConversationViewer";
+import {
+  addMessageToConversation,
+  clearAllConversations,
+} from "../../actions/conversationActions";
 // import CoversationsWindow from "../../components/conversationsDashboard/CoversationsWindow";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textAlign: "left",
   },
   tabsContainer: {
     justifyContent: "center",
@@ -35,13 +43,20 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
   },
   appBar: {
-    background: "#3981a4",
+    background: "rgba(8, 81, 108, 0.5)",
+  },
+  chip: {
+    marginRight: "1rem",
+  },
+  chipText: {
+    color: "rgb(195, 203, 227, 0.6)",
   },
 }));
 
 export default function ConversationsDashboard({ history }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const socket = useSelector((state) => state.userData.socket);
   const [value, setValue] = React.useState("conversations");
 
   const handleChange = (_event, newValue) => {
@@ -51,8 +66,24 @@ export default function ConversationsDashboard({ history }) {
   const handleSignOut = () => {
     dispatch(resetAuthenticationStatus());
     dispatch(resetContacts());
+    dispatch(resetSocketConnection());
+    dispatch(clearAllConversations());
     history.push("/");
   };
+
+  const getMessage = React.useCallback((data) => {
+    console.log("RECEIVED:::", data);
+    const { messageItem, sender } = data;
+    dispatch(addMessageToConversation(sender, messageItem));
+  }, []);
+
+  React.useEffect(() => {
+    if (!socket) return;
+
+    socket.on("receive-message", getMessage);
+
+    return () => socket.off("receive-message");
+  }, []);
 
   const tabs = {
     conversations: {

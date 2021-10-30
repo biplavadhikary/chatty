@@ -1,5 +1,7 @@
 import React from "react";
 import posed from "react-pose";
+import { formatDate, formatTime } from "../../../utils/formatters";
+import { smoothScrollToBottomFunc } from "../../../utils/uiUtils";
 import Person from "./Person";
 
 const ChatWindow = posed.ol({
@@ -22,21 +24,21 @@ const MessageItem = posed.li({
   },
 });
 
-function formatTime(date) {
-  return `${date.getHours()}:${date.getMinutes()}`;
-}
-
-function formatDate(date) {
-  return `${date.getDate()}/${date.getMonth()}`;
-}
-
 function Chat({ messages, person, visible, onAnimComplete }) {
-  console.log("CHAT:::", messages);
+  const chatWindowRef = React.useRef(null);
+
+  React.useEffect(() => {
+    smoothScrollToBottomFunc(chatWindowRef);
+  }, [messages]);
+
+  console.log("Messages", messages);
+
   return (
     <ChatWindow
       className="chat"
       pose={visible ? "visible" : "hidden"}
       onPoseComplete={onAnimComplete}
+      ref={chatWindowRef}
     >
       {messages.map((m) => (
         <MessageItem
@@ -52,8 +54,12 @@ function Chat({ messages, person, visible, onAnimComplete }) {
           <div className="message">
             <div>{m.message}</div>
             <div className="date">
-              <div className="time">{m.date ? formatTime(m.date) : "--"}</div>
-              <div className="date">{m.date ? formatDate(m.date) : ""}</div>
+              <div className="time">
+                {m.dateTime ? formatTime(m.dateTime) : "--"}
+              </div>
+              <div className="date">
+                {m.dateTime ? formatDate(m.dateTime) : ""}
+              </div>
             </div>
           </div>
         </MessageItem>

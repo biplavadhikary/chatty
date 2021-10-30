@@ -35,11 +35,25 @@ export default createReducer(initialState, {
     ...state,
     conversationItems: { ...state.conversationItems, [id]: null },
   }),
+  [conversationActions.CLEAR_ALL_CONVERSATIONS]: () => ({
+    ...initialState,
+  }),
   [conversationActions.ADD_MESSAGE_TO_CONVERSATION]: (
     state,
     { payload: { id, messageItem } }
   ) => {
-    console.log("REDUCER:::", id, messageItem);
+    if (!state?.conversationItems?.[id])
+      return {
+        ...state,
+        conversationItems: {
+          ...state.conversationItems,
+          [id]: {
+            userId: id,
+            messageDataList: [messageItem],
+          },
+        },
+      };
+
     return {
       ...state,
       conversationItems: {
