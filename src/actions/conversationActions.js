@@ -18,7 +18,7 @@ export const conversationFetchFailed = () => ({
   type: conversationActions.FETCH_ALL_CONVERSATIONS_ERROR,
 });
 
-export const addCoMessageToConversation = (id, messageItem) => ({
-  type: conversationActions.ADD_CONVERSATION,
+export const addMessageToConversation = (id, messageItem) => ({
+  type: conversationActions.ADD_MESSAGE_TO_CONVERSATION,
   payload: { id, messageItem },
 });

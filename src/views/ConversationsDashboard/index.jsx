@@ -1,19 +1,11 @@
 import React from "react";
-import {
-  AppBar,
-  Button,
-  makeStyles,
-  Paper,
-  Tab,
-  Tabs,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles, Paper, Tab, Tabs } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import { resetAuthenticationStatus } from "../../actions/userDataActions";
 import { resetContacts } from "../../actions/contactActions";
 import Navigator from "../../components/conversationsDashboard/Navigator";
-import ConversationsViewer from "../../components/conversationsDashboard/ConversationsViewer";
+import ConversationsViewer from "../../components/conversationsDashboard/ConversationViewer";
+// import CoversationsWindow from "../../components/conversationsDashboard/CoversationsWindow";
 
 const useStyles = makeStyles((theme) => ({
   root: {

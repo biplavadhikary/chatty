@@ -38,19 +38,22 @@ export default createReducer(initialState, {
   [conversationActions.ADD_MESSAGE_TO_CONVERSATION]: (
     state,
     { payload: { id, messageItem } }
-  ) => ({
-    ...initialState,
-    conversationItems: {
-      ...state.conversationItems,
-      [id]: {
-        ...(state.conversationItems && state.conversationItems[id]),
-        messageDataList: [
-          ...(state.conversationItems &&
-            state.conversationItems[id] &&
-            state.conversationItems[id].messageData),
-          messageItem,
-        ],
+  ) => {
+    console.log("REDUCER:::", id, messageItem);
+    return {
+      ...state,
+      conversationItems: {
+        ...state.conversationItems,
+        [id]: {
+          ...(state.conversationItems && state.conversationItems[id]),
+          messageDataList: [
+            ...(state.conversationItems &&
+              state.conversationItems[id] &&
+              state.conversationItems[id].messageDataList),
+            messageItem,
+          ],
+        },
       },
-    },
-  }),
+    };
+  },
 });

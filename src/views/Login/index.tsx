@@ -39,8 +39,8 @@ const Login = ({ history }: Login) => {
 
     if (response.data?.success === true) {
       dispatch(authenticationSuccess(response.data.data));
-      // setTimeout(() => history.push("/login-Success"), 1000);
-      history.push("/login-Success");
+      setTimeout(() => history.push("/login-Success"), 1000);
+      // history.push("/login-Success");
     } else {
       dispatch(authenticationFailed());
     }
