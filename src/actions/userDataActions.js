@@ -25,3 +25,7 @@ export const createSocket = (socket) => ({
 export const resetSocketConnection = () => ({
   type: userDataActions.RESET_SOCKET,
 });
+
+export const disconnectSocketConnection = () => ({
+  type: userDataActions.DISCONNECT_SOCKET,
+});

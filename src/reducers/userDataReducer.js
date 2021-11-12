@@ -45,4 +45,12 @@ export default createReducer(initialState, {
     ...state,
     socket: null,
   }),
+  [userDataActions.DISCONNECT_SOCKET]: (state) => {
+    console.log("SOCKET:::1", state);
+    const { socket } = state;
+    console.log("SOCKET:::2", socket);
+    if (socket) socket.disconnect();
+
+    return { ...state };
+  },
 });

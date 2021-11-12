@@ -17,7 +17,7 @@ export default function Navigator({ handleSignOut, classes }) {
     <AppBar position="static" color="primary" className={classes.appBar}>
       <Toolbar>
         <Typography variant="h6" color="textPrimary" className={classes.title}>
-          Conversation Dashboard
+          Oneview Manager
         </Typography>
         <div>
           <Chip

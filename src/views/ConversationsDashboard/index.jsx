@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, Paper, Tab, Tabs } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  disconnectSocketConnection,
   resetAuthenticationStatus,
   resetSocketConnection,
 } from "../../actions/userDataActions";
@@ -64,6 +65,7 @@ export default function ConversationsDashboard({ history }) {
   };
 
   const handleSignOut = () => {
+    dispatch(disconnectSocketConnection());
     dispatch(resetAuthenticationStatus());
     dispatch(resetContacts());
     dispatch(resetSocketConnection());
@@ -87,11 +89,15 @@ export default function ConversationsDashboard({ history }) {
 
   const tabs = {
     conversations: {
-      label: "My Conversations",
+      label: "User Information",
       component: ConversationsViewer,
     },
     contacts: {
-      label: "My Contacts",
+      label: "Appliances",
+      component: React.Fragment,
+    },
+    status: {
+      label: "Status",
       component: React.Fragment,
     },
   };
