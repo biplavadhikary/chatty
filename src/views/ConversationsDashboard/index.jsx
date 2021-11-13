@@ -13,6 +13,9 @@ import {
   addMessageToConversation,
   clearAllConversations,
 } from "../../actions/conversationActions";
+import NotificationViewer from "../../components/NotificationViewer";
+import { addNotification } from "../../actions/notificationActions";
+import Appliances from "../../components/Applicances";
 // import CoversationsWindow from "../../components/conversationsDashboard/CoversationsWindow";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: "100%",
     color: "black",
+    overflow: "hidden",
   },
   appBar: {
     background: "rgba(8, 81, 108, 0.5)",
@@ -58,6 +62,9 @@ export default function ConversationsDashboard({ history }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const socket = useSelector((state) => state.userData.socket);
+  const isNotificationEnabled = useSelector(
+    (state) => state.notification.isEnabled
+  );
   const [value, setValue] = React.useState("conversations");
 
   const handleChange = (_event, newValue) => {
@@ -79,26 +86,47 @@ export default function ConversationsDashboard({ history }) {
     dispatch(addMessageToConversation(sender, messageItem));
   }, []);
 
+  const getNotification = React.useCallback((data) => {
+    const { id } = data ?? {};
+    if (id) {
+      dispatch(addNotification(id, data));
+    }
+  }, []);
+
   React.useEffect(() => {
     if (!socket) return;
 
     socket.on("receive-message", getMessage);
 
-    return () => socket.off("receive-message");
+    return () => {
+      socket.off("receive-message");
+    };
   }, []);
+
+  React.useEffect(() => {
+    if (!socket) return;
+
+    if (isNotificationEnabled) {
+      socket.on("send-status-update", getNotification);
+    }
+
+    return () => {
+      socket.off("send-status-update");
+    };
+  });
 
   const tabs = {
     conversations: {
       label: "User Information",
       component: ConversationsViewer,
     },
-    contacts: {
+    appliances: {
       label: "Appliances",
-      component: React.Fragment,
+      component: Appliances,
     },
     status: {
       label: "Status",
-      component: React.Fragment,
+      component: NotificationViewer,
     },
   };
 

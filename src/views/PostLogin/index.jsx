@@ -92,7 +92,9 @@ export default function PostLogin({ history }) {
       {isContactsBeingFetch && (
         <div className={classes.root}>
           <ThreeDotsLoader />
-          <Typography color="textSecondary">Loading your Chats ...</Typography>
+          <Typography color="textSecondary">
+            Loading your Oneview ...
+          </Typography>
         </div>
       )}
     </>

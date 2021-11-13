@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { contactActions, conversationActions } from "../actions/type";
+import { conversationActions } from "../actions/type";
 
 const initialState = {
   loading: false,

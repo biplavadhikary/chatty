@@ -85,7 +85,7 @@ export default function CoversationsWindow({ conversation }) {
       <div className={classes.pane}>
         <Header
           name={getDisplayName(conversation)}
-          onProfileClick={emptyFunction}
+          onClickFirstButton={emptyFunction}
         />
       </div>
 

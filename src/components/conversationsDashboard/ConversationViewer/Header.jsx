@@ -8,13 +8,15 @@ import {
 import clsx from "clsx";
 import React from "react";
 
+const emptyFunction = () => {};
+
 const useStyles = makeStyles(() => ({
   button: {
     background: "none",
     border: 0,
     height: "2rem",
     padding: "0.5rem 1rem",
-    width: "4rem",
+    width: "100%",
     transition: "all 0.1s linear",
     "&:focus": {
       outline: 0,
@@ -24,6 +26,9 @@ const useStyles = makeStyles(() => ({
       color: "#00417b",
     },
   },
+  wrapperDivSide: {
+    minWidth: "15%",
+  },
   more: {
     fontWeight: "bold",
     color: "black",
@@ -31,6 +36,8 @@ const useStyles = makeStyles(() => ({
   title: {},
   back: {
     fontWeight: "bold",
+    color: "black",
+    textTransform: "none",
   },
   name: {
     fontSize: "1.25em",
@@ -48,7 +55,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function Header({ name, onProfileClick }) {
+function Header({
+  name,
+  onClickFirstButton,
+  hideMoreMenu = false,
+  hideFirstButton = false,
+  firstButtonText = "Profile",
+  secondButtonText = "...",
+  onClickSecondButton = emptyFunction,
+}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -62,19 +77,35 @@ function Header({ name, onProfileClick }) {
 
   return (
     <div className={classes.header}>
-      <button
-        className={clsx(classes.back, classes.button)}
-        onClick={onProfileClick}
-      >
-        Profile
-      </button>
+      <div className={classes.wrapperDivSide}>
+        {!hideFirstButton && (
+          <Button
+            className={clsx(classes.back, classes.button)}
+            onClick={onClickFirstButton}
+            disableRipple
+          >
+            {firstButtonText}
+          </Button>
+        )}
+      </div>
+
       <h1 className={classes.name}>{name || "Unknown"}</h1>
-      <Button
-        className={clsx(classes.more, classes.button)}
-        onClick={handleMoreMenuClick}
-      >
-        ...
-      </Button>
+
+      <div className={classes.wrapperDivSide}>
+        {!hideMoreMenu && (
+          <Button
+            className={clsx(classes.more, classes.button)}
+            onClick={
+              secondButtonText === "..."
+                ? handleMoreMenuClick
+                : onClickSecondButton
+            }
+            disableRipple
+          >
+            {secondButtonText}
+          </Button>
+        )}
+      </div>
       <Menu
         id="more-menu"
         anchorEl={anchorEl}

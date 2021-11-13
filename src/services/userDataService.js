@@ -13,9 +13,16 @@ const fetchConversations = (userId) => {
   });
 };
 
+const getSystemDetails = (data) => {
+  return axios.get(getApiUrl("getSystemDetails"), {
+    params: data,
+  });
+};
+
 const userDataService = {
   fetchContactList,
   fetchConversations,
+  getSystemDetails,
 };
 
 export default userDataService;
